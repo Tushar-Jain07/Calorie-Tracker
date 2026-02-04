@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script>
+    // Redirect to login if not logged in
+    try {
+        const SESSION_KEY = 'macrosnap_session';
+        if (!localStorage.getItem(SESSION_KEY)) {
+            window.location.href = '/login.html';
+        }
+    } catch(e) {}
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0a0a0a">
+    <link rel="manifest" href="/manifest.json">
+    <title>MacroSnap</title>
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/833/833472.png">
+</head>
+<body>
+    <a href="#calculator" class="skip-link">Skip to main content</a>
+    <div class="container" role="main" aria-label="MacroSnap Nutrition Tracker">
+        <header>
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+                <div>
+                    <h1 id="site-title" tabindex="0">MacroSnap</h1>
+                    <div class="tagline" aria-live="polite">Smarter Nutrition. Better Results.</div>
+                    <div class="motivation" style="font-size:1.1em;color:var(--accent);margin-top:4px;" aria-live="polite">Fuel Your Goals. Track. Achieve. Repeat.</div>
+                </div>
+                <div id="profile-menu" style="position:relative;">
+                    <button id="profile-btn" style="background:var(--panel-bg,#181818);color:var(--accent,#00b894);border:none;padding:10px 18px;border-radius:50%;font-size:1.2em;cursor:pointer;display:flex;align-items:center;justify-content:center;width:44px;height:44px;box-shadow:0 2px 8px #0002;">
+                        <img id="profile-avatar" src="https://ui-avatars.com/api/?name=U&background=00e600&color=fff&rounded=true&size=44" alt="User" style="width:32px;height:32px;border-radius:50%;object-fit:cover;">
+                    </button>
+                    <div id="profile-dropdown" style="display:none;position:absolute;right:0;top:110%;background:var(--panel-bg,#181818);color:var(--text,#fff);border-radius:12px;box-shadow:0 4px 24px #0004;min-width:260px;z-index:10;padding:24px 24px 18px 24px;">
+                        <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;">
+                            <img id="profile-avatar-dropdown" src="https://ui-avatars.com/api/?name=U&background=00e600&color=fff&rounded=true&size=44" alt="User" style="width:44px;height:44px;border-radius:50%;object-fit:cover;">
+                            <div>
+                                <div id="profile-username" style="font-weight:700;font-size:1.1em;">User</div>
+                                <div style="font-size:12px;color:var(--text-dim);margin-top:2px;">User ID</div>
+                            </div>
+                        </div>
+                        <button id="logout-btn" style="width:100%;background:#ff4d4f;color:#fff;border:none;padding:10px 0;border-radius:8px;margin-bottom:18px;cursor:pointer;font-size:1em;font-weight:600;">Logout</button>
+                        <div style="font-size:13px;margin-bottom:6px;font-weight:600;">Your Data</div>
+                        <div id="profile-records" style="max-height:220px;overflow:auto;font-size:13px;background:var(--bg,#222);padding:10px 12px 10px 12px;border-radius:8px;line-height:1.7;"></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="nav-tabs">
+            <button class="tab-btn active" data-tab="calculator" aria-controls="calculator" aria-selected="true" role="tab">Calculator</button>
+            <button class="tab-btn" data-tab="dashboard" aria-controls="dashboard" aria-selected="false" role="tab">Dashboard</button>
+            <button class="tab-btn" data-tab="food-log" aria-controls="food-log" aria-selected="false" role="tab">Food Log</button>
+            <button class="tab-btn" data-tab="progress" aria-controls="progress" aria-selected="false" role="tab">Progress</button>
+        </div>
+
+        <!-- Calculator Tab -->
+        <div class="tab-content active" id="calculator">
+            <div class="grid" aria-label="User Profile and Activity Form">
+                <div class="panel">
+                    <div class="panel-title">// User Profile</div>
+                    <div class="form-group">
+                        <label>Age (years)</label>
+                        <input type="number" id="age" placeholder="25" min="13" max="100" aria-label="Age in years">
+                        <div class="input-error" id="error-age" style="color:#ff4d4f;font-size:11px;display:none;"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Sex</label>
+                        <select id="sex" aria-label="Sex">
+                            <option value="">Select...</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                        <div class="input-error" id="error-sex" style="color:#ff4d4f;font-size:11px;display:none;"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Height</label>
+                        <div class="unit-toggle" style="margin-bottom: 10px;">
+                            <button class="active" data-unit="cm">CM</button>
+                            <button data-unit="ft">FT/IN</button>
+                        </div>
+                        <input type="number" id="height-cm" placeholder="170" step="0.1" aria-label="Height in centimeters">
+                        <div id="height-ft" style="display: none;">
+                            <div class="input-group">
+                                <input type="number" id="height-ft-val" placeholder="5" min="3" max="8" aria-label="Height in feet">
+                                <input type="number" id="height-in-val" placeholder="7" min="0" max="11" aria-label="Height in inches">
+                            </div>
+                        </div>
+                        <div class="input-error" id="error-height" style="color:#ff4d4f;font-size:11px;display:none;"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Weight</label>
+                        <div class="unit-toggle" style="margin-bottom: 10px;">
+                            <button class="active" data-unit="kg">KG</button>
+                            <button data-unit="lbs">LBS</button>
+                        </div>
+                        <input type="number" id="weight-kg" placeholder="70" step="0.1" aria-label="Weight">
+                        <div class="input-error" id="error-weight" style="color:#ff4d4f;font-size:11px;display:none;"></div>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-title">// Activity &amp; Goals</div>
+                    <div class="form-group">
+                        <label>Activity Level</label>
+                        <select id="activity" aria-label="Activity Level">
+                            <option value="">Select...</option>
+                            <option value="1.2">Sedentary (little/no exercise)</option>
+                            <option value="1.375">Light (1-3 workouts/week)</option>
+                            <option value="1.55">Moderate (3-5 workouts/week)</option>
+                            <option value="1.725">Very Active (6-7 workouts/week)</option>
+                            <option value="1.9">Athlete (2x daily)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Goal</label>
+                        <select id="goal" aria-label="Goal">
+                            <option value="">Select...</option>
+                            <option value="loss">Fat Loss</option>
+                            <option value="maintenance">Maintenance</option>
+                            <option value="gain">Muscle Gain</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="deficit-group" style="display: none;">
+                        <label>Deficit %</label>
+                        <input type="number" id="deficit" placeholder="20" min="10" max="25" step="1">
+                    </div>
+                    <div class="form-group" id="surplus-group" style="display: none;">
+                        <label>Surplus %</label>
+                        <input type="number" id="surplus" placeholder="10" min="5" max="15" step="1">
+                    </div>
+                    <button class="btn" id="calculate-btn">CALCULATE</button>
+                </div>
+            </div>
+
+            <div class="panel" id="results-panel" style="margin-top: 30px; display: none;">
+                <div class="panel-title">// Results</div>
+                <div class="metric-display">
+                    <div class="metric">
+                        <div class="metric-label">BMR</div>
+                        <div class="metric-value" id="bmr">--</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">TDEE</div>
+                        <div class="metric-value" id="tdee">--</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Target</div>
+                        <div class="metric-value" id="target">--</div>
+                    </div>
+                </div>
+                <div class="formula-display">
+                    <div class="formula-title">Target Macros</div>
+                    <div id="macro-results">
+                        <div>Protein: <span id="macro-protein">--</span>g</div>
+                        <div>Fat: <span id="macro-fat">--</span>g</div>
+                        <div>Carbs: <span id="macro-carbs">--</span>g</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Tab -->
+        <div class="tab-content" id="dashboard">
+            <div class="grid">
+                <div class="panel">
+                    <div class="panel-title">// Today's Status</div>
+                    <div class="metric-display">
+                        <div class="metric">
+                            <div class="metric-label">Target</div>
+                            <div class="metric-value" id="dash-target">--</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Consumed</div>
+                            <div class="metric-value" id="dash-consumed">0</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Remaining</div>
+                            <div class="metric-value" id="dash-remaining">--</div>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="calorie-progress" style="width: 0%">
+                            <div class="progress-text" id="progress-text">0%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-title">// Macros Today</div>
+                    <div class="macro-breakdown">
+                        <div class="macro-bar">
+                            <div class="macro-bar-fill protein" id="protein-bar" style="height: 0px;"></div>
+                            <div style="font-size: 11px; color: #00ff00;">P: <span id="protein-consumed">0</span>g</div>
+                        </div>
+                        <div class="macro-bar">
+                            <div class="macro-bar-fill fat" id="fat-bar" style="height: 0px;"></div>
+                            <div style="font-size: 11px; color: #ffff00;">F: <span id="fat-consumed">0</span>g</div>
+                        </div>
+                        <div class="macro-bar">
+                            <div class="macro-bar-fill carbs" id="carbs-bar" style="height: 0px;"></div>
+                            <div style="font-size: 11px; color: #00ffff;">C: <span id="carbs-consumed">0</span>g</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Food Log Tab -->
+        <div class="tab-content" id="food-log">
+            <div class="panel">
+                <div class="panel-title">// Add Food</div>
+                <div class="grid">
+                    <div class="form-group">
+                        <label>Food Name</label>
+                        <input type="text" id="food-name" placeholder="Chicken Breast" aria-label="Food Name" autocomplete="off" list="food-suggestions">
+                        <datalist id="food-suggestions"></datalist>
+                    </div>
+                    <div class="form-group">
+                        <label>Serving (grams)</label>
+                        <input type="number" id="food-serving" placeholder="100" step="1" aria-label="Serving in grams/milliliters">
+                        <span id="food-serving-hint" style="font-size:11px;color:var(--text-dim);display:none;"></span>
+                    </div>
+                </div>
+                <div class="grid">
+                    <div class="form-group">
+                        <label>Calories (per serving)</label>
+                        <input type="number" id="food-calories" placeholder="165" step="1" aria-label="Calories per serving">
+                    </div>
+                    <div class="form-group">
+                        <label>Protein (g)</label>
+                        <input type="number" id="food-protein" placeholder="31" step="0.1" aria-label="Protein in grams">
+                    </div>
+                    <div class="form-group">
+                        <label>Fat (g)</label>
+                        <input type="number" id="food-fat" placeholder="3.6" step="0.1" aria-label="Fat in grams">
+                    </div>
+                    <div class="form-group">
+                        <label>Carbs (g)</label>
+                        <input type="number" id="food-carbs" placeholder="0" step="0.1" aria-label="Carbs in grams">
+                    </div>
+                </div>
+                <button class="btn" id="add-food-btn">ADD TO LOG</button>
+            </div>
+
+            <div class="panel" style="margin-top: 30px;">
+                <div class="panel-title">// Today's Food Log</div>
+                <div id="food-entries">
+                    <div class="no-data">NO ENTRIES YET</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Tab -->
+        <div class="tab-content" id="progress">
+            <div class="panel">
+                <div class="panel-title">// 7-Day Average</div>
+                <button id="share-achievement" aria-label="Share your achievement on social media" style="margin-bottom:16px;float:right;background:var(--accent);color:var(--bg);border:2px solid var(--accent);padding:8px 18px;border-radius:8px;cursor:pointer;font-size:13px;">Share Achievement</button>
+                <div class="metric-display">
+                    <div class="metric">
+                        <div class="metric-label">Avg Calories</div>
+                        <div class="metric-value" id="avg-calories">--</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Compliance</div>
+                        <div class="metric-value" id="compliance">--%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel" style="margin-top: 30px;">
+                <div class="panel-title">// Weekly Progress Chart</div>
+                <canvas id="weeklyProgressChart" style="width:100%;max-width:600px;background:var(--bg);border-radius:8px;"></canvas>
+                <div style="height:24px;"></div>
+                <div class="panel-title">// Weight Tracking</div>
+                <div class="form-group">
+                    <label>Log Today's Weight (kg)</label>
+                    <div class="input-group">
+                        <input type="number" id="weight-log" placeholder="70.0" step="0.1" aria-label="Log Today Weight">
+                        <button class="btn" id="log-weight-btn">LOG</button>
+                    </div>
+                </div>
+                <div id="weight-log-table"></div>
+            </div>
+        </div>
+
+        <footer style="margin-top:40px;text-align:center;color:var(--text-dim);font-size:12px;">
+            &copy; 2026 MacroSnap &mdash; Nutrition Tracking Made Simple
+        </footer>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+</body>
+</html>

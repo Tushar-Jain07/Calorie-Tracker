@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - MacroSnap</title>
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/833/833472.png">
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login to MacroSnap</h2>
+        <div class="login-error" id="login-error"></div>
+        <form id="login-form" autocomplete="off">
+            <label for="login-username">Username</label>
+            <input type="text" id="login-username" required placeholder="Enter username" autocomplete="username">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" required placeholder="Enter password" autocomplete="current-password">
+            <button type="submit">Login</button>
+        </form>
+        <div class="switch-link" style="text-align:center;margin-top:10px;font-size:13px;">New user? <a href="/register.html">Create an account</a></div>
+    </div>
+    <script type="module" src="/src/login.js"></script>
+</body>
+</html>

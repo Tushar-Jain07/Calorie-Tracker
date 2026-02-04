@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="3;url=/">
+    <title>404 - Page Not Found | MacroSnap</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #0a0a0a;
+            color: #00e600;
+            font-family: 'Courier New', monospace;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .error-container {
+            max-width: 600px;
+        }
+        
+        h1 {
+            font-size: 72px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #00e600;
+            animation: glow 2s ease-in-out infinite;
+        }
+        
+        @keyframes glow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #b0b0b0;
+        }
+        
+        a {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #00e600;
+            color: #0a0a0a;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        a:hover {
+            background: #00ff00;
+            box-shadow: 0 0 20px #00e600;
+        }
+        
+        .ascii-art {
+            font-size: 10px;
+            line-height: 1.2;
+            margin-bottom: 30px;
+            color: #00e600;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="ascii-art">
+     ___  ___  ___  
+    | | |/ _ \| | |
+    | |_| | | | |_|
+    |___|_| |_|___|
+        </div>
+        <h1>404</h1>
+        <p>Page Not Found</p>
+        <p>The page you're looking for doesn't exist or has been moved.</p>
+        <p style="font-size: 14px; margin-bottom: 20px;">Redirecting to home in 3 seconds...</p>
+        <a href="/">Return to MacroSnap</a>
+    </div>
+</body>
+</html>
