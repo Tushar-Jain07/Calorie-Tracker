@@ -2,6 +2,7 @@
   "name": "macrosnap",
   "version": "3.0.0",
   "private": true,
+  "type": "module",
   "description": "MacroSnap — Premium Full-Stack Nutrition Tracker",
   "scripts": {
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",

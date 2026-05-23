@@ -2,12 +2,6 @@
   "buildCommand": "npm run install:all && cd client && npm run build",
   "outputDirectory": "client/dist",
   "framework": "vite",
-  "functions": {
-    "server/server.js": {
-      "memory": 1024,
-      "maxDuration": 10
-    }
-  },
   "redirects": [
     {
       "source": "/(.*)",
@@ -24,7 +18,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/server/server.js"
+      "destination": "/api/index.js"
     },
     {
       "source": "/((?!api/).*)",
