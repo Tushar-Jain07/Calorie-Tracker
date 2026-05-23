@@ -2,6 +2,19 @@
   "buildCommand": "cd client && npm install && npm run build",
   "outputDirectory": "client/dist",
   "framework": "vite",
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "macrosnap.vercel.app"
+        }
+      ],
+      "destination": "https://calorie-tracker-c7hxnoy6y-tushar-jain07s-projects.vercel.app/$1",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/((?!api/).*)",
