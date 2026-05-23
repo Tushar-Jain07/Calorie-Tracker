@@ -82,7 +82,7 @@ export default function Calculator() {
     if (!results) return;
     setSaving(true);
     try {
-      const { data } = await profileService.updateProfile({
+      const data = await profileService.updateProfile({
         age: parseInt(form.age),
         sex: form.sex,
         heightCm: parseFloat(form.heightCm),
